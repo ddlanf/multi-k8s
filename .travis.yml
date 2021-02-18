@@ -1,0 +1,21 @@
+sude: required
+services: 
+  - docker
+
+before_install:
+  - docker build -t daniel/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run daniel/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t daniel/multi-client ./client
+  - docker build -t daniel/multi-nginx ./nginx
+  - docker build -t daniel/multi-server ./server
+  - docker build -t daniel/multi-worker ./worker 
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push daniel/multi-client
+  - docker push daniel/multi-nginx
+  - docker push daniel/multi-server
+  - docker push daniel/multi-worker
