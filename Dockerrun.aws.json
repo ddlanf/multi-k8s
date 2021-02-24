@@ -1,0 +1,45 @@
+{
+    "AWSEBDockerrunVersion" : 2,
+    "containerDefinitions" : [
+        {
+            "name" : "client",
+            "image" : "danlan26/multi-client",
+            "hostname" : "client",
+            "essential" : false
+        },
+        {
+            "name" : "server",
+            "image" : "danlan26/multi-sever",
+            "hostname" : "server",
+            "essential" : false
+        },
+        {
+            "name" : "server",
+            "image" : "danlan26/multi-sever",
+            "hostname" : "api",
+            "essential" : false
+        },
+        {
+            "name" : "worker",
+            "image" : "danlan26/multi-worker",
+            "hostname" : "worker",
+            "essential" : false
+        },
+        {
+            "name" : "nginx",
+            "image" : "danlan26/multi-nginx",
+            "hostname" : "nginx",
+            "essential" : true,
+            "portMappings" : [
+                {
+                    "host" : 80,
+                    "containerPort" : 80
+                }
+            ],
+            "links" : [
+                "client", 
+                "server"
+            ]
+        }
+    ]
+}
