@@ -5,10 +5,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t danlan26/react-test -f ./client/Dockerfile.dev ./client
+  - docker run -e CI=true USERNAME/react-test npm test -- --coverage
 
 script:
-  - docker run -e CI=true danlan26/react-test npm test -- --coverage
+  - docker run -e CI=true danlan26/react-test npm test -- 
 
 after_success:
   - docker build -t danlan26/multi-client ./client
@@ -27,10 +27,10 @@ deploy:
   provider: elasticbeanstalk
   region: 'us-east-2'
   app: 'multi-docker'
-  env: 'Multidocker-env-1'
-  bucket_name: 'elasticbeanstalk-us-east-2-220272862475'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
   bucket_path: 'docker-multi'
   on:
-    branch: main
+    branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
